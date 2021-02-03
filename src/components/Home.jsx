@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 
 import {
   Button,
@@ -105,7 +106,6 @@ const Home = (props) => {
   const token = useSelector((state) => state.jwtAUth.token);
   const [error, setError] = useState('');
   const [families, setFamilies] = useState([]);
-
   useEffect(() => {
     const fetchAllFamilies = async () => {
       try {
@@ -144,7 +144,7 @@ const Home = (props) => {
           <ArrowDropDownCircleOutlinedIcon fontSize="large" />
         </IconButton>
       </Grid>
-      <Grid item xs={12} className={classes.family}>
+      <Grid item xs={12}>
         <Typography variant="h5" className={classes.title}>
           1. Family Royale
         </Typography>
@@ -161,6 +161,24 @@ const Home = (props) => {
         <Typography variant="h5" className={classes.title}>
           2. Castle Royale
         </Typography>
+        <Divider style={{ margin: '3em' }} />
+        <Grid item xs={12} className={classes.flexCenter}>
+          <MapContainer
+            center={[43.4833, -1.4833]}
+            zoom={13}
+            scrollWheelZoom={false}
+          >
+            <TileLayer
+              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <Marker position={[43.4984, -1.4731]}>
+              <Popup>
+                A pretty CSS3 popup. <br /> Easily customizable.
+              </Popup>
+            </Marker>
+          </MapContainer>
+        </Grid>
         <Divider style={{ margin: '3em' }} />
       </Grid>
     </Grid>
