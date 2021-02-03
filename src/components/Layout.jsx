@@ -162,7 +162,9 @@ export default function Layout({ ...props }) {
       <CssBaseline />
       <AppBar position="sticky">
         <Toolbar>
-          <img src={logo} alt="logo-royale" style={{ height: '32px' }} />
+          <Link component={RouterLink} to="/" underline="none">
+            <img src={logo} alt="logo-royale" style={{ height: '32px' }} />
+          </Link>
           <Typography variant="h5" className={classes.title}>
             Wild Royale
           </Typography>
