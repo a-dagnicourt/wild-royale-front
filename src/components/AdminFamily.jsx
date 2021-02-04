@@ -1,4 +1,4 @@
-import { Divider, Grid } from '@material-ui/core';
+import { Grid, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -11,7 +11,6 @@ import { blue, green, red } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '80vw',
     marginLeft: theme.spacing(15),
     '& .MuiTextField-root': {
       margin: theme.spacing(1),
@@ -32,6 +31,14 @@ const useStyles = makeStyles((theme) => ({
     width: '20ch',
     marginRight: '3%',
     textTransform: 'capitalize',
+  },
+  picPreviewPaper: {
+    marginTop: '1em',
+    marginBottom: '1em',
+    width: '250px',
+  },
+  picPreview: {
+    height: '150px',
   },
 }));
 
@@ -78,7 +85,7 @@ const AdminFamily = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { firstname, lastname, linkedin, github, zone, picture } = newFamily;
+    const { firstname, lastname, linkedin, github, zone } = newFamily;
     try {
       await axios.post(
         'http://localhost:5000/api/v0/families',
@@ -88,7 +95,7 @@ const AdminFamily = () => {
           linkedin,
           github,
           zone,
-          picture,
+          picture: uploaded.path,
         },
         {
           headers: {
@@ -104,7 +111,7 @@ const AdminFamily = () => {
 
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
-    const { firstname, lastname, linkedin, github, zone, picture } = newFamily;
+    const { firstname, lastname, linkedin, github, zone } = newFamily;
     try {
       await axios.put(
         `http://localhost:5000/api/v0/families/${id.id}`,
@@ -114,7 +121,7 @@ const AdminFamily = () => {
           linkedin,
           github,
           zone,
-          picture,
+          picture: uploaded.path,
         },
         {
           headers: {
@@ -160,7 +167,7 @@ const AdminFamily = () => {
   return (
     <form className={classes.root} noValidate autoComplete="off">
       <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12}>
           <TextField
             type="text"
             id="list"
@@ -234,25 +241,28 @@ const AdminFamily = () => {
             variant="outlined"
             size="small"
           />
-          <TextField
-            type="text"
-            id="picture"
-            label="Picture"
-            value={uploaded.path !== '' ? uploaded.path : null}
-            onChange={(e) =>
-              setNewFamily({ ...newFamily, picture: e.target.value })
-            }
-            variant="outlined"
-            size="small"
-          />
-          <Divider style={{ margin: '1em' }} />
+          {id !== '' ? (
+            <Paper className={classes.picPreviewPaper}>
+              <img
+                src={family[id.id - 1].picture}
+                alt="lol"
+                className={classes.picPreview}
+              />
+            </Paper>
+          ) : null}
           <Button variant="outlined" component="label">
             Upload Picture
             <input type="file" hidden name="file" onChange={handleUpload} />
           </Button>
           {isSelected ? (
             <div>
-              <p>Filename: {selectedFile.name}</p>
+              <Paper className={classes.picPreviewPaper}>
+                <img
+                  src={uploaded.path}
+                  alt="preview"
+                  className={classes.picPreview}
+                />
+              </Paper>
             </div>
           ) : (
             <p>Select a file to show details</p>
