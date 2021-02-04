@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { grey } from '@material-ui/core/colors';
+import { yellow } from '@material-ui/core/colors';
 
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,7 +18,7 @@ import { CHANGE_USER_ROLE } from '../store/reducers/role';
 
 const useStyles = makeStyles((theme) => ({
   background: {
-    backgroundColor: grey[800],
+    backgroundColor: yellow[700],
     height: '100vh',
   },
   root: {
@@ -138,7 +138,7 @@ function LoginForm() {
             style={{ width: '70px', marginTop: '100px' }}
           />
           {/* </Avatar> */}
-          <Typography style={{ color: 'white' }} component="h1" variant="h5">
+          <Typography component="h1" variant="h5">
             Sign In
           </Typography>
           <form onSubmit={onSubmit} className={classes.form} noValidate>

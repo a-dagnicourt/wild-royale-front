@@ -22,7 +22,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Link from '@material-ui/core/Link';
 import { Box } from '@material-ui/core';
-import { grey } from '@material-ui/core/colors';
+import { grey, yellow } from '@material-ui/core/colors';
 
 import useAuth from '../hooks/useAuth';
 
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
   },
   appBar: {
-    backgroundColor: grey[800],
+    backgroundColor: yellow[700],
     color: 'black',
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {

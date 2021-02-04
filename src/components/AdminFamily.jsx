@@ -245,7 +245,7 @@ const AdminFamily = () => {
             <Paper className={classes.picPreviewPaper}>
               <img
                 src={family[id.id - 1].picture}
-                alt="lol"
+                alt="Preview"
                 className={classes.picPreview}
               />
             </Paper>
@@ -259,7 +259,7 @@ const AdminFamily = () => {
               <Paper className={classes.picPreviewPaper}>
                 <img
                   src={uploaded.path}
-                  alt="preview"
+                  alt="Preview"
                   className={classes.picPreview}
                 />
               </Paper>

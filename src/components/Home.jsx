@@ -4,6 +4,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
 import Grid from '@material-ui/core/Grid';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 
@@ -22,6 +23,7 @@ import {
   Paper,
   Typography,
 } from '@material-ui/core';
+import { grey, yellow } from '@material-ui/core/colors';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import ArrowDropDownCircleOutlinedIcon from '@material-ui/icons/ArrowDropDownCircleOutlined';
@@ -37,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     padding: theme.spacing(0),
+    backgroundColor: grey[300],
   },
   flexCenter: {
     display: 'flex',
@@ -47,9 +50,10 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: yellow[700],
   },
   hero: {
-    backgroundImage: `linear-gradient(rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.25) 75%, rgba(255,255,255,1) 100%),url(${hero})`,
+    backgroundImage: `linear-gradient(rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.25) 75%, rgba(224,224,224,1) 100%),url(${hero})`,
     backgroundSize: 'cover',
     height: '100vh',
     color: 'white',
@@ -70,15 +74,16 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '3.5em',
     fontWeight: 'bold',
     lineHeight: theme.spacing(0),
+    color: yellow[700],
   },
   cta: {
     marginTop: '20vh',
+    color: yellow[700],
   },
   title: {
     display: 'flex',
-    flexDirection: 'column',
     justifyContent: 'center',
-    margin: theme.spacing(3),
+    margin: theme.spacing(5),
   },
   carousel: {
     display: 'flex',
@@ -101,6 +106,10 @@ const useStyles = makeStyles((theme) => ({
   },
   pinMedia: {
     height: 100,
+  },
+  footer: {
+    backgroundColor: grey[800],
+    color: 'white',
   },
 }));
 
@@ -161,20 +170,21 @@ const Home = (props) => {
         <h2 className={classes.subTitleHero}>
           Home of the Royal Wild Family !
         </h2>
-        <IconButton
-          color="inherit"
-          aria-label="cta-down"
-          edge="start"
-          className={classes.cta}
-        >
-          <ArrowDropDownCircleOutlinedIcon fontSize="large" />
-        </IconButton>
+        <HashLink to="#family" underline="none" smooth>
+          <IconButton
+            color="inherit"
+            aria-label="cta-down"
+            edge="start"
+            className={classes.cta}
+          >
+            <ArrowDropDownCircleOutlinedIcon fontSize="large" />
+          </IconButton>
+        </HashLink>
       </Grid>
-      <Grid item xs={12}>
-        <Typography variant="h5" className={classes.title}>
+      <Grid item xs={12} id="family">
+        <Typography variant="h3" className={classes.title}>
           1. Family Royale
         </Typography>
-        <Divider style={{ margin: '3em' }} />
         <Grid item xs={12} className={classes.carousel}>
           <Carousel>
             {families.map((item, i) => (
@@ -184,10 +194,9 @@ const Home = (props) => {
           </Carousel>
         </Grid>
         <Divider style={{ margin: '3em' }} />
-        <Typography variant="h5" className={classes.title}>
+        <Typography variant="h3" className={classes.title}>
           2. Castle Royale
         </Typography>
-        <Divider style={{ margin: '3em' }} />
         <Grid item xs={12} className={classes.flexCenter}>
           <MapContainer
             center={[43.3872, -1.2996]}
@@ -205,6 +214,11 @@ const Home = (props) => {
           </MapContainer>
         </Grid>
         <Divider style={{ margin: '3em' }} />
+      </Grid>
+      <Grid xs="12" className={classes.footer}>
+        <Typography variant="body2" className={classes.title}>
+          Made with lov.. SWEAT - 02/2021
+        </Typography>
       </Grid>
     </Grid>
   );
