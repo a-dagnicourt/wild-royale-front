@@ -250,6 +250,7 @@ function Pin(props) {
   const { label, lat, long, picture, reservation } = props.item;
   const classes = useStyles();
   const position = [lat, long];
+  const pic = picture[picture.length - 1];
   return (
     <Marker position={position}>
       <Popup>
@@ -257,15 +258,15 @@ function Pin(props) {
           <CardActionArea>
             <CardMedia
               className={classes.pinMedia}
-              image={picture[0].url}
-              title={picture[0].alt}
+              image={pic.url}
+              title={pic.alt}
             />
             <CardContent>
               <Typography gutterBottom variant="body1" component="h3">
                 {label}
               </Typography>
               <Typography variant="body3" color="textSecondary" component="p">
-                {picture[0].alt}
+                {pic.alt}
               </Typography>
             </CardContent>
           </CardActionArea>

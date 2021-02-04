@@ -262,7 +262,7 @@ export default function Layout({ ...props }) {
                   </ListItemText>
                 </ListItem>
               </Link>
-              <Link component={RouterLink} to="/map" underline="none">
+              <Link component={RouterLink} to="/adminProperty" underline="none">
                 <ListItem button>
                   <ListItemIcon>
                     <SearchIcon className={classes.icon} />
