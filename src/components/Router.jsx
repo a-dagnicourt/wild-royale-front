@@ -12,7 +12,7 @@ import User from './User/User';
 import Home from './Home';
 import Login from './Login';
 import SignIn from './SignIn';
-import CompanySignUp from './SignUp/CompanySignUp';
+// import CompanySignUp from './SignUp/CompanySignUp';
 
 const LayoutedRoute = ({ component: Component, layout: Layout, ...rest }) => {
   const connected = useSelector((state) => state.auth.isAuth);
@@ -40,7 +40,7 @@ export default function Router() {
     <BrowserRouter>
       <Switch>
         <Route path="/signin" component={SignIn} />
-        <Route path="/signup" component={CompanySignUp} />
+        {/* <Route path="/signup" component={CompanySignUp} /> */}
         <LayoutedRoute
           path="/adminFamily"
           layout={ResponsiveDrawer}

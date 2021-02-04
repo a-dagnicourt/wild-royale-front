@@ -1,4 +1,4 @@
-const initialState = { email: '', password: '', isAdmin: true, isAuth: false };
+const initialState = { email: '', password: '', isAdmin: '', isAuth: false };
 
 function reducer(state = initialState, action) {
   switch (action.type) {

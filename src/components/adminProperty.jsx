@@ -140,6 +140,13 @@ const AdminProperty = () => {
     fetchAllProperties();
   };
 
+  // const field = () => {
+  //   if (id !== '') {
+  //     return property[id.id - 1].label;
+  //   }
+  //   return null;
+  // };
+
   useEffect(() => {
     fetchAllProperties();
   }, []);
@@ -168,7 +175,7 @@ const AdminProperty = () => {
             type="text"
             id="label"
             label="Label"
-            // value={id !== '' ? property[id.id - 1].label : null}
+            // value={field()}
             onChange={(e) =>
               setNewProperty({ ...newProperty, label: e.target.value })
             }
