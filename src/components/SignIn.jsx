@@ -123,11 +123,11 @@ function LoginForm() {
           token: data.token,
         },
       });
-
+      console.log(data.user.isAdmin);
       dispatch({
         type: CHANGE_USER_ROLE,
         payload: {
-          role: data.user.isAdmin,
+          isAdmin: data.user.isAdmin,
         },
       });
 
