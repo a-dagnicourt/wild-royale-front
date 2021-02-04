@@ -35,35 +35,35 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AdminFamily = () => {
+const AdminProperty = () => {
   const classes = useStyles();
   const [error, setError] = useState('');
-  const [family, setFamily] = useState([]);
+  const [property, setProperty] = useState([]);
+  const [newProperty, setNewProperty] = useState({});
   const [id, setId] = useState('');
   const token = useSelector((state) => state.jwtAUth.token);
 
-  const [newFamily, setNewFamily] = useState({});
-
-  const fetchAllFamilies = async () => {
+  const fetchAllProperties = async () => {
     try {
       setError(null);
       const { data } = await axios.get(
-        `http://localhost:5000/api/v0/families`,
+        `http://localhost:5000/api/v0/properties`,
         {
           headers: {
             authorization: `Bearer ${token}`,
           },
         }
       );
-      setFamily(data);
+      setProperty(data);
     } catch (err) {
       setError({ ...err });
     }
   };
-  const deleteFamily = async () => {
+
+  const deleteProperty = async () => {
     try {
       setError(null);
-      await axios.delete(`http://localhost:5000/api/v0/families/${id.id}`, {
+      await axios.delete(`http://localhost:5000/api/v0/properties/${id.id}`, {
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -71,22 +71,29 @@ const AdminFamily = () => {
     } catch (err) {
       setError({ ...err });
     }
-    fetchAllFamilies();
+    fetchAllProperties();
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { firstname, lastname, linkedin, github, zone, picture } = newFamily;
+    const {
+      label,
+      lat,
+      long,
+      pictureUrl,
+      pictureAlt,
+      reservation,
+    } = newProperty;
     try {
       await axios.post(
-        'http://localhost:5000/api/v0/families',
+        'http://localhost:5000/api/v0/properties',
         {
-          firstname,
-          lastname,
-          linkedin,
-          github,
-          zone,
-          picture,
+          label,
+          lat,
+          long,
+          pictureUrl,
+          pictureAlt,
+          reservation,
         },
         {
           headers: {
@@ -97,22 +104,29 @@ const AdminFamily = () => {
     } catch (err) {
       setError({ ...err });
     }
-    fetchAllFamilies();
+    fetchAllProperties();
   };
 
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
-    const { firstname, lastname, linkedin, github, zone, picture } = newFamily;
+    const {
+      label,
+      lat,
+      long,
+      pictureUrl,
+      pictureAlt,
+      reservation,
+    } = newProperty;
     try {
       await axios.put(
-        `http://localhost:5000/api/v0/families/${id.id}`,
+        `http://localhost:5000/api/v0/properties/${id.id}`,
         {
-          firstname,
-          lastname,
-          linkedin,
-          github,
-          zone,
-          picture,
+          label,
+          lat,
+          long,
+          pictureUrl,
+          pictureAlt,
+          reservation,
         },
         {
           headers: {
@@ -123,11 +137,11 @@ const AdminFamily = () => {
     } catch (err) {
       setError({ ...err });
     }
-    fetchAllFamilies();
+    fetchAllProperties();
   };
 
   useEffect(() => {
-    fetchAllFamilies();
+    fetchAllProperties();
   }, []);
 
   return (
@@ -138,48 +152,36 @@ const AdminFamily = () => {
             type="text"
             id="list"
             select
-            label="Family list"
+            label="Property list"
             variant="outlined"
             size="small"
             onChange={(e) => setId({ ...id, id: e.target.value })}
           >
-            {family.map((item) => (
+            {property.map((item) => (
               // eslint-disable-next-line react/jsx-props-no-spreading
               <MenuItem {...item} key={item.id} value={item.id}>
-                {`${item.id} - ${item.lastname} ${item.firstname}`}
+                {`${item.id} - ${item.label}`}
               </MenuItem>
             ))}
           </TextField>
           <TextField
             type="text"
-            id="firstname"
-            label="Firstname"
-            value={id !== '' ? family[id.id - 1].firstname : 'firstname'}
+            id="label"
+            label="Label"
+            value={id !== '' ? property[id.id - 1].label : 'label'}
             onChange={(e) =>
-              setNewFamily({ ...newFamily, firstname: e.target.value })
+              setNewProperty({ ...newProperty, label: e.target.value })
             }
             variant="outlined"
             size="small"
           />
           <TextField
             type="text"
-            id="lastname"
-            label="Lastname"
-            value={id !== '' ? family[id.id - 1].lastname : 'lastname'}
+            id="lat"
+            label="Latitude"
+            value={id !== '' ? property[id.id - 1].lat : 'lat'}
             onChange={(e) =>
-              setNewFamily({ ...newFamily, lastname: e.target.value })
-            }
-            variant="outlined"
-            size="small"
-          />
-
-          <TextField
-            type="text"
-            id="linkedin"
-            label="LinkedIn"
-            value={id !== '' ? family[id.id - 1].linkedin : 'linkedin'}
-            onChange={(e) =>
-              setNewFamily({ ...newFamily, linkedin: e.target.value })
+              setNewProperty({ ...newProperty, lat: e.target.value })
             }
             variant="outlined"
             size="small"
@@ -187,33 +189,38 @@ const AdminFamily = () => {
 
           <TextField
             type="text"
-            id="github"
-            label="GitHub"
-            value={id !== '' ? family[id.id - 1].github : 'github'}
+            id="long"
+            label="Longitude"
+            value={id !== '' ? property[id.id - 1].long : 'long'}
             onChange={(e) =>
-              setNewFamily({ ...newFamily, github: e.target.value })
+              setNewProperty({ ...newProperty, long: e.target.value })
+            }
+            variant="outlined"
+            size="small"
+          />
+
+          <TextField
+            type="text"
+            id="pictureUrl"
+            label="Picture Url"
+            value={
+              id !== '' ? property[id.id - 1].picture[0].url : 'pictureUrl'
+            }
+            onChange={(e) =>
+              setNewProperty({ ...newProperty, pictureUrl: e.target.value })
             }
             variant="outlined"
             size="small"
           />
           <TextField
             type="text"
-            id="zone"
-            label="Zone"
-            value={id !== '' ? family[id.id - 1].zone : 'zone'}
-            onChange={(e) =>
-              setNewFamily({ ...newFamily, zone: e.target.value })
+            id="pictureAlt"
+            label="Picture Alt"
+            value={
+              id !== '' ? property[id.id - 1].picture[0].alt : 'pictureAlt'
             }
-            variant="outlined"
-            size="small"
-          />
-          <TextField
-            type="text"
-            id="picture"
-            label="Picture"
-            value={id !== '' ? family[id.id - 1].picture : 'picture'}
             onChange={(e) =>
-              setNewFamily({ ...newFamily, picture: e.target.value })
+              setNewProperty({ ...newProperty, pictureAlt: e.target.value })
             }
             variant="outlined"
             size="small"
@@ -225,9 +232,9 @@ const AdminFamily = () => {
             className={classes.ButtonValForm}
             variant="contained"
             style={{ backgroundColor: red[300] }}
-            onClick={deleteFamily}
+            onClick={deleteProperty}
           >
-            Delete User
+            Delete Property
           </Button>
           <Button
             className={classes.ButtonValForm}
@@ -235,7 +242,7 @@ const AdminFamily = () => {
             style={{ backgroundColor: blue[400] }}
             onClick={handleUpdateSubmit}
           >
-            Update User
+            Update Property
           </Button>
           <Button
             className={classes.ButtonValForm}
@@ -243,7 +250,7 @@ const AdminFamily = () => {
             style={{ backgroundColor: green[400] }}
             onClick={handleSubmit}
           >
-            Add User
+            Add Property
           </Button>
           {error && (
             <p style={{ color: 'red' }}>
@@ -256,4 +263,4 @@ const AdminFamily = () => {
   );
 };
 
-export default AdminFamily;
+export default AdminProperty;

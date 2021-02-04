@@ -4,7 +4,7 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ResponsiveDrawer from './Layout';
 import AdminFamily from './AdminFamily';
-import Market from './Market';
+import adminProperty from './adminProperty';
 import Data from './Data';
 import Map from './Map';
 import Mall from './Mall';
@@ -47,9 +47,9 @@ export default function Router() {
           component={AdminFamily}
         />
         <LayoutedRoute
-          path="/market"
+          path="/adminProperty"
           layout={ResponsiveDrawer}
-          component={Market}
+          component={adminProperty}
         />
         <LayoutedRoute
           path="/data"
