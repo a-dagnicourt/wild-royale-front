@@ -168,6 +168,7 @@ export default function Layout({ ...props }) {
           <Typography variant="h5" className={classes.title}>
             Wild Royale
           </Typography>
+
           <IconButton
             color="inherit"
             aria-label="logout"

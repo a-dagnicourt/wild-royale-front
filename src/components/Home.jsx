@@ -95,6 +95,13 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     color: theme.palette.text.secondary,
   },
+  pin: {
+    width: 200,
+    height: 250,
+  },
+  pinMedia: {
+    height: 100,
+  },
 }));
 
 const Home = (props) => {
@@ -106,6 +113,8 @@ const Home = (props) => {
   const token = useSelector((state) => state.jwtAUth.token);
   const [error, setError] = useState('');
   const [families, setFamilies] = useState([]);
+  const [properties, setProperties] = useState([]);
+
   useEffect(() => {
     const fetchAllFamilies = async () => {
       try {
@@ -123,8 +132,25 @@ const Home = (props) => {
         setError({ ...err });
       }
     };
+    const fetchAllProperties = async () => {
+      try {
+        setError(null);
+        const { data } = await axios.get(
+          `http://localhost:5000/api/v0/properties`,
+          {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setProperties(data);
+      } catch (err) {
+        setError({ ...err });
+      }
+    };
 
     fetchAllFamilies();
+    fetchAllProperties();
   }, []);
 
   return (
@@ -164,19 +190,18 @@ const Home = (props) => {
         <Divider style={{ margin: '3em' }} />
         <Grid item xs={12} className={classes.flexCenter}>
           <MapContainer
-            center={[43.4833, -1.4833]}
-            zoom={13}
+            center={[43.3872, -1.2996]}
+            zoom={10}
             scrollWheelZoom={false}
           >
             <TileLayer
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Marker position={[43.4984, -1.4731]}>
-              <Popup>
-                A pretty CSS3 popup. <br /> Easily customizable.
-              </Popup>
-            </Marker>
+            {properties.map((item, i) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <Pin key={i} item={item} />
+            ))}
           </MapContainer>
         </Grid>
         <Divider style={{ margin: '3em' }} />
@@ -218,6 +243,35 @@ function Item(props) {
         </Button>
       </CardActions>
     </Card>
+  );
+}
+
+function Pin(props) {
+  const { label, lat, long, picture, reservation } = props.item;
+  const classes = useStyles();
+  const position = [lat, long];
+  return (
+    <Marker position={position}>
+      <Popup>
+        <Card className={classes.pin}>
+          <CardActionArea>
+            <CardMedia
+              className={classes.pinMedia}
+              image={picture[0].url}
+              title={picture[0].alt}
+            />
+            <CardContent>
+              <Typography gutterBottom variant="body1" component="h3">
+                {label}
+              </Typography>
+              <Typography variant="body3" color="textSecondary" component="p">
+                {picture[0].alt}
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+      </Popup>
+    </Marker>
   );
 }
 
