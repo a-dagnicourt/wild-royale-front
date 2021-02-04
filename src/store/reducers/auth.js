@@ -1,4 +1,4 @@
-const initialState = { email: '', password: '', cognito: '', isAuth: false };
+const initialState = { email: '', password: '', isAdmin: true, isAuth: false };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
@@ -8,10 +8,10 @@ function reducer(state = initialState, action) {
         email: action.payload.email,
         password: action.payload.password,
       };
-    case 'SET_COGNITO_DATA':
+    case 'SET_ADMIN':
       return {
         ...state,
-        cognito: action.payload,
+        isAdmin: action.payload.isAdmin,
       };
     case 'SET_IS_AUTH':
       return {

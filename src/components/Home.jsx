@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 
 import {
   Button,
@@ -94,6 +95,13 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     color: theme.palette.text.secondary,
   },
+  pin: {
+    width: 200,
+    height: 250,
+  },
+  pinMedia: {
+    height: 100,
+  },
 }));
 
 const Home = (props) => {
@@ -105,6 +113,7 @@ const Home = (props) => {
   const token = useSelector((state) => state.jwtAUth.token);
   const [error, setError] = useState('');
   const [families, setFamilies] = useState([]);
+  const [properties, setProperties] = useState([]);
 
   useEffect(() => {
     const fetchAllFamilies = async () => {
@@ -123,8 +132,25 @@ const Home = (props) => {
         setError({ ...err });
       }
     };
+    const fetchAllProperties = async () => {
+      try {
+        setError(null);
+        const { data } = await axios.get(
+          `http://localhost:5000/api/v0/properties`,
+          {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setProperties(data);
+      } catch (err) {
+        setError({ ...err });
+      }
+    };
 
     fetchAllFamilies();
+    fetchAllProperties();
   }, []);
 
   return (
@@ -144,7 +170,7 @@ const Home = (props) => {
           <ArrowDropDownCircleOutlinedIcon fontSize="large" />
         </IconButton>
       </Grid>
-      <Grid item xs={12} className={classes.family}>
+      <Grid item xs={12}>
         <Typography variant="h5" className={classes.title}>
           1. Family Royale
         </Typography>
@@ -161,6 +187,23 @@ const Home = (props) => {
         <Typography variant="h5" className={classes.title}>
           2. Castle Royale
         </Typography>
+        <Divider style={{ margin: '3em' }} />
+        <Grid item xs={12} className={classes.flexCenter}>
+          <MapContainer
+            center={[43.3872, -1.2996]}
+            zoom={10}
+            scrollWheelZoom={false}
+          >
+            <TileLayer
+              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            {properties.map((item, i) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <Pin key={i} item={item} />
+            ))}
+          </MapContainer>
+        </Grid>
         <Divider style={{ margin: '3em' }} />
       </Grid>
     </Grid>
@@ -200,6 +243,35 @@ function Item(props) {
         </Button>
       </CardActions>
     </Card>
+  );
+}
+
+function Pin(props) {
+  const { label, lat, long, picture, reservation } = props.item;
+  const classes = useStyles();
+  const position = [lat, long];
+  return (
+    <Marker position={position}>
+      <Popup>
+        <Card className={classes.pin}>
+          <CardActionArea>
+            <CardMedia
+              className={classes.pinMedia}
+              image={picture[0].url}
+              title={picture[0].alt}
+            />
+            <CardContent>
+              <Typography gutterBottom variant="body1" component="h3">
+                {label}
+              </Typography>
+              <Typography variant="body3" color="textSecondary" component="p">
+                {picture[0].alt}
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+      </Popup>
+    </Marker>
   );
 }
 

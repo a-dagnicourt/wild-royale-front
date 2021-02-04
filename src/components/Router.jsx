@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ResponsiveDrawer from './Layout';
-import Notification from './Notification';
+import AdminFamily from './AdminFamily';
 import Market from './Market';
 import Data from './Data';
 import Map from './Map';
@@ -42,9 +42,9 @@ export default function Router() {
         <Route path="/signin" component={SignIn} />
         <Route path="/signup" component={CompanySignUp} />
         <LayoutedRoute
-          path="/notification"
+          path="/adminFamily"
           layout={ResponsiveDrawer}
-          component={Notification}
+          component={AdminFamily}
         />
         <LayoutedRoute
           path="/market"
