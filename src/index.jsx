@@ -4,8 +4,6 @@ import { Provider } from 'react-redux';
 import './index.css';
 import { ThemeProvider } from '@material-ui/core';
 import App from './App';
-import './i18next';
-import reportWebVitals from './reportWebVitals';
 import store from './store';
 import theme from './theme';
 
@@ -21,5 +19,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
-
-reportWebVitals();

@@ -13,7 +13,7 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { LOGIN } from '../store/reducers/jwtAuth';
 import logo_royale from '../images/logo_royale.png';
-import { CHANGE_DATA_USER } from '../store/reducers/dataUser';
+// import { CHANGE_DATA_USER } from '../store/reducers/dataUser';
 import { CHANGE_USER_ROLE } from '../store/reducers/role';
 
 const useStyles = makeStyles((theme) => ({
@@ -111,12 +111,12 @@ function LoginForm() {
 
       delete data.user.isAdmin;
 
-      dispatch({
-        type: CHANGE_DATA_USER,
-        payload: {
-          user: data.user,
-        },
-      });
+      // dispatch({
+      //   type: CHANGE_DATA_USER,
+      //   payload: {
+      //     user: data.user,
+      //   },
+      // });
 
       localStorage.setItem('TOKEN', data.token);
       if (data) {
@@ -137,7 +137,6 @@ function LoginForm() {
             alt="logo"
             style={{ width: '70px', marginTop: '100px' }}
           />
-          {/* </Avatar> */}
           <Typography component="h1" variant="h5">
             Sign In
           </Typography>
@@ -192,9 +191,6 @@ function LoginForm() {
           </form>
         </div>
       </Container>
-      {/* <Box mt={10} display="flex" justifyContent="center">
-        <Copyright />
-      </Box> */}
     </div>
   );
 }
