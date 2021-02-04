@@ -168,7 +168,7 @@ const AdminProperty = () => {
             type="text"
             id="label"
             label="Label"
-            value={id !== '' ? property[id.id - 1].label : 'label'}
+            // value={id !== '' ? property[id.id - 1].label : null}
             onChange={(e) =>
               setNewProperty({ ...newProperty, label: e.target.value })
             }
@@ -179,7 +179,7 @@ const AdminProperty = () => {
             type="text"
             id="lat"
             label="Latitude"
-            value={id !== '' ? property[id.id - 1].lat : 'lat'}
+            // value={id !== '' ? property[id.id - 1].lat : null}
             onChange={(e) =>
               setNewProperty({ ...newProperty, lat: e.target.value })
             }
@@ -191,7 +191,7 @@ const AdminProperty = () => {
             type="text"
             id="long"
             label="Longitude"
-            value={id !== '' ? property[id.id - 1].long : 'long'}
+            // value={id !== '' ? property[id.id - 1].long : null}
             onChange={(e) =>
               setNewProperty({ ...newProperty, long: e.target.value })
             }
@@ -203,9 +203,7 @@ const AdminProperty = () => {
             type="text"
             id="pictureUrl"
             label="Picture Url"
-            value={
-              id !== '' ? property[id.id - 1].picture[0].url : 'pictureUrl'
-            }
+            // value={id !== '' ? property[id.id - 1].picture[0].url : null}
             onChange={(e) =>
               setNewProperty({ ...newProperty, pictureUrl: e.target.value })
             }
@@ -216,9 +214,7 @@ const AdminProperty = () => {
             type="text"
             id="pictureAlt"
             label="Picture Alt"
-            value={
-              id !== '' ? property[id.id - 1].picture[0].alt : 'pictureAlt'
-            }
+            // value={id !== '' ? property[id.id - 1].picture[0].alt : null}
             onChange={(e) =>
               setNewProperty({ ...newProperty, pictureAlt: e.target.value })
             }

@@ -1,4 +1,4 @@
-import { Grid } from '@material-ui/core';
+import { Divider, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -39,10 +39,12 @@ const AdminFamily = () => {
   const classes = useStyles();
   const [error, setError] = useState('');
   const [family, setFamily] = useState([]);
-  const [id, setId] = useState('');
-  const token = useSelector((state) => state.jwtAUth.token);
-
   const [newFamily, setNewFamily] = useState({});
+  const [id, setId] = useState('');
+  const [selectedFile, setSelectedFile] = useState();
+  const [isSelected, setIsSelected] = useState(false);
+  const [uploaded, setUploaded] = useState('');
+  const token = useSelector((state) => state.jwtAUth.token);
 
   const fetchAllFamilies = async () => {
     try {
@@ -126,6 +128,31 @@ const AdminFamily = () => {
     fetchAllFamilies();
   };
 
+  const handleUpload = (e) => {
+    setSelectedFile(e.target.files[0]);
+    setIsSelected(true);
+  };
+
+  const handleUploadSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+    try {
+      const { data } = await axios.post(
+        `http://localhost:5000/api/v0/pictures/upload`,
+        formData,
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setUploaded(data);
+    } catch (err) {
+      setError({ ...err });
+    }
+  };
+
   useEffect(() => {
     fetchAllFamilies();
   }, []);
@@ -151,10 +178,10 @@ const AdminFamily = () => {
             ))}
           </TextField>
           <TextField
-            type="text"
+            type="input"
             id="firstname"
             label="Firstname"
-            value={id !== '' ? family[id.id - 1].firstname : 'firstname'}
+            // value={id !== '' ? family[id.id - 1].firstname : null}
             onChange={(e) =>
               setNewFamily({ ...newFamily, firstname: e.target.value })
             }
@@ -165,7 +192,7 @@ const AdminFamily = () => {
             type="text"
             id="lastname"
             label="Lastname"
-            value={id !== '' ? family[id.id - 1].lastname : 'lastname'}
+            // value={id !== '' ? family[id.id - 1].lastname : null}
             onChange={(e) =>
               setNewFamily({ ...newFamily, lastname: e.target.value })
             }
@@ -177,7 +204,7 @@ const AdminFamily = () => {
             type="text"
             id="linkedin"
             label="LinkedIn"
-            value={id !== '' ? family[id.id - 1].linkedin : 'linkedin'}
+            // value={id !== '' ? family[id.id - 1].linkedin : null}
             onChange={(e) =>
               setNewFamily({ ...newFamily, linkedin: e.target.value })
             }
@@ -189,7 +216,7 @@ const AdminFamily = () => {
             type="text"
             id="github"
             label="GitHub"
-            value={id !== '' ? family[id.id - 1].github : 'github'}
+            // value={id !== '' ? family[id.id - 1].github : null}
             onChange={(e) =>
               setNewFamily({ ...newFamily, github: e.target.value })
             }
@@ -200,7 +227,7 @@ const AdminFamily = () => {
             type="text"
             id="zone"
             label="Zone"
-            value={id !== '' ? family[id.id - 1].zone : 'zone'}
+            // value={id !== '' ? family[id.id - 1].zone : null}
             onChange={(e) =>
               setNewFamily({ ...newFamily, zone: e.target.value })
             }
@@ -211,13 +238,35 @@ const AdminFamily = () => {
             type="text"
             id="picture"
             label="Picture"
-            value={id !== '' ? family[id.id - 1].picture : 'picture'}
+            value={uploaded.path !== '' ? uploaded.path : null}
             onChange={(e) =>
               setNewFamily({ ...newFamily, picture: e.target.value })
             }
             variant="outlined"
             size="small"
           />
+          <Divider style={{ margin: '1em' }} />
+          <Button variant="outlined" component="label">
+            Upload Picture
+            <input type="file" hidden name="file" onChange={handleUpload} />
+          </Button>
+          {isSelected ? (
+            <div>
+              <p>Filename: {selectedFile.name}</p>
+            </div>
+          ) : (
+            <p>Select a file to show details</p>
+          )}
+          <div>
+            <Button
+              variant="outlined"
+              component="label"
+              type="submit"
+              onClick={handleUploadSubmit}
+            >
+              Submit
+            </Button>
+          </div>
         </Grid>
 
         <Grid item xs={12}>
