@@ -183,7 +183,7 @@ const Home = (props) => {
       </Grid>
       <Grid item xs={12} id="family">
         <Typography variant="h3" className={classes.title}>
-          1. Family Royale
+          Family Royale
         </Typography>
         <Grid item xs={12} className={classes.carousel}>
           <Carousel>
@@ -195,7 +195,7 @@ const Home = (props) => {
         </Grid>
         <Divider style={{ margin: '3em' }} />
         <Typography variant="h3" className={classes.title}>
-          2. Castle Royale
+          Castle Royale
         </Typography>
         <Grid item xs={12} className={classes.flexCenter}>
           <MapContainer

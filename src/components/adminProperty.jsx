@@ -11,11 +11,10 @@ import { blue, green, red } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '80vw',
-    marginLeft: theme.spacing(15),
+    paddingLeft: theme.spacing(10),
     '& .MuiTextField-root': {
       margin: theme.spacing(1),
-      width: '40ch',
+      width: '50vw',
     },
     '& > *': {
       margin: theme.spacing(1),
@@ -29,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
   ButtonValForm: {
     marginTop: '5ch',
-    width: '20ch',
+    width: '50vw',
     marginRight: '3%',
     textTransform: 'capitalize',
   },
@@ -168,8 +167,8 @@ const AdminProperty = () => {
 
   return (
     <form className={classes.root} noValidate autoComplete="off">
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
+      <Grid container>
+        <Grid item xs={3}>
           <TextField
             type="text"
             id="list"
@@ -229,7 +228,11 @@ const AdminProperty = () => {
               />
             </Paper>
           ) : null}
-          <Button variant="outlined" component="label">
+          <Button
+            variant="outlined"
+            component="label"
+            className={classes.ButtonValForm}
+          >
             Upload Picture
             <input type="file" hidden name="file" onChange={handleUpload} />
           </Button>
@@ -244,7 +247,7 @@ const AdminProperty = () => {
               </Paper>
             </div>
           ) : (
-            <p>Select a file to show details</p>
+            <p>File preview</p>
           )}
           <div>
             <Button
@@ -252,6 +255,7 @@ const AdminProperty = () => {
               component="label"
               type="submit"
               onClick={handleUploadSubmit}
+              className={classes.ButtonValForm}
             >
               Submit
             </Button>
