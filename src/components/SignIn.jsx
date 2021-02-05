@@ -1,41 +1,25 @@
-/* eslint-disable no-console */
+/* eslint-disable camelcase */
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { yellow } from '@material-ui/core/colors';
 
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, Link as RouterLink } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { LOGIN } from '../store/reducers/jwtAuth';
-import logo from '../images/logo.png';
-import wave from '../images/wave.png';
-import { CHANGE_DATA_USER } from '../store/reducers/dataUser';
+import logo_royale from '../images/logo_royale.png';
+// import { CHANGE_DATA_USER } from '../store/reducers/dataUser';
 import { CHANGE_USER_ROLE } from '../store/reducers/role';
-
-function Copyright() {
-  return (
-    <Typography variant="h6" color="textSecondary" align="center">
-      <Link
-        component={RouterLink}
-        to="/signup"
-        style={{ color: 'white', marginRight: '2rem' }}
-      >
-        Créer un compte
-      </Link>{' '}
-    </Typography>
-  );
-}
 
 const useStyles = makeStyles((theme) => ({
   background: {
-    backgroundImage: `url(${wave})`,
+    backgroundColor: yellow[700],
+    height: '100vh',
   },
   root: {
     '& label.Mui-focused': {
@@ -55,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
         borderColor: 'white',
       },
       backgroundColor: 'white',
-      borderRadius: '30px',
     },
   },
   paper: {
@@ -73,17 +56,13 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    borderRadius: 30,
-    height: 47,
-    backgroundColor: '#84ffac',
+
     color: 'black',
     '&:hover': {
-      backgroundColor: '#84ffac',
       boxShadow: 'none',
     },
     '&:active': {
       boxShadow: 'none',
-      backgroundColor: '#84ffac',
     },
     '&:focus': {
       boxShadow: '0 0 0 0.2rem rgba(0,123,255,.5)',
@@ -123,7 +102,6 @@ function LoginForm() {
           token: data.token,
         },
       });
-      console.log(data.user.isAdmin);
       dispatch({
         type: CHANGE_USER_ROLE,
         payload: {
@@ -133,17 +111,15 @@ function LoginForm() {
 
       delete data.user.isAdmin;
 
-      dispatch({
-        type: CHANGE_DATA_USER,
-        payload: {
-          user: data.user,
-        },
-      });
+      // dispatch({
+      //   type: CHANGE_DATA_USER,
+      //   payload: {
+      //     user: data.user,
+      //   },
+      // });
 
       localStorage.setItem('TOKEN', data.token);
       if (data) {
-        console.log({ data });
-
         dispatch({ type: 'SET_IS_AUTH', payload: true });
       }
     } catch (err) {
@@ -152,20 +128,16 @@ function LoginForm() {
   };
 
   return (
-    <div
-      className={classes.background}
-      style={{ backgroundColor: 'black', height: '100vh' }}
-    >
+    <div className={classes.background}>
       <Container className={classes.contain} component="main" maxWidth="xs">
         <CssBaseline style={{ backgroundColor: 'black' }} />
         <div className={classes.paper}>
           <img
-            src={logo}
-            alt="logo-ftm"
+            src={logo_royale}
+            alt="logo"
             style={{ width: '70px', marginTop: '100px' }}
           />
-          {/* </Avatar> */}
-          <Typography style={{ color: 'white' }} component="h1" variant="h5">
+          <Typography component="h1" variant="h5">
             Sign In
           </Typography>
           <form onSubmit={onSubmit} className={classes.form} noValidate>
@@ -216,24 +188,9 @@ function LoginForm() {
             >
               Connexion
             </Button>
-            <Grid container>
-              <Grid item xs>
-                {/* <Link href="#" variant="body2">
-                Forgot password?
-              </Link> */}
-              </Grid>
-              <Grid item>
-                {/* <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link> */}
-              </Grid>
-            </Grid>
           </form>
         </div>
       </Container>
-      <Box mt={10} display="flex" justifyContent="center">
-        <Copyright />
-      </Box>
     </div>
   );
 }

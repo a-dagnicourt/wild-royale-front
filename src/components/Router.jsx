@@ -5,14 +5,9 @@ import PropTypes from 'prop-types';
 import ResponsiveDrawer from './Layout';
 import AdminFamily from './AdminFamily';
 import adminProperty from './adminProperty';
-import Data from './Data';
-import Map from './Map';
-import Mall from './Mall';
-import User from './User/User';
 import Home from './Home';
-import Login from './Login';
 import SignIn from './SignIn';
-import CompanySignUp from './SignUp/CompanySignUp';
+// import CompanySignUp from './SignUp/CompanySignUp';
 
 const LayoutedRoute = ({ component: Component, layout: Layout, ...rest }) => {
   const connected = useSelector((state) => state.auth.isAuth);
@@ -40,7 +35,7 @@ export default function Router() {
     <BrowserRouter>
       <Switch>
         <Route path="/signin" component={SignIn} />
-        <Route path="/signup" component={CompanySignUp} />
+        {/* <Route path="/signup" component={CompanySignUp} /> */}
         <LayoutedRoute
           path="/adminFamily"
           layout={ResponsiveDrawer}
@@ -50,27 +45,6 @@ export default function Router() {
           path="/adminProperty"
           layout={ResponsiveDrawer}
           component={adminProperty}
-        />
-        <LayoutedRoute
-          path="/data"
-          layout={ResponsiveDrawer}
-          component={Data}
-        />
-        <LayoutedRoute path="/map" layout={ResponsiveDrawer} component={Map} />
-        <LayoutedRoute
-          path="/mall"
-          layout={ResponsiveDrawer}
-          component={Mall}
-        />
-        <LayoutedRoute
-          path="/user"
-          layout={ResponsiveDrawer}
-          component={User}
-        />
-        <LayoutedRoute
-          path="/login"
-          layout={ResponsiveDrawer}
-          component={Login}
         />
         <LayoutedRoute
           exact

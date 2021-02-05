@@ -1,4 +1,4 @@
-import { Grid } from '@material-ui/core';
+import { Grid, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -11,11 +11,10 @@ import { blue, green, red } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '80vw',
-    marginLeft: theme.spacing(15),
+    paddingLeft: theme.spacing(10),
     '& .MuiTextField-root': {
       margin: theme.spacing(1),
-      width: '40ch',
+      width: '50vw',
     },
     '& > *': {
       margin: theme.spacing(1),
@@ -29,9 +28,17 @@ const useStyles = makeStyles((theme) => ({
   },
   ButtonValForm: {
     marginTop: '5ch',
-    width: '20ch',
+    width: '50vw',
     marginRight: '3%',
     textTransform: 'capitalize',
+  },
+  picPreviewPaper: {
+    marginTop: '1em',
+    marginBottom: '1em',
+    width: '250px',
+  },
+  picPreview: {
+    height: '150px',
   },
 }));
 
@@ -41,6 +48,9 @@ const AdminProperty = () => {
   const [property, setProperty] = useState([]);
   const [newProperty, setNewProperty] = useState({});
   const [id, setId] = useState('');
+  const [selectedFile, setSelectedFile] = useState();
+  const [isSelected, setIsSelected] = useState(false);
+  const [uploaded, setUploaded] = useState('');
   const token = useSelector((state) => state.jwtAUth.token);
 
   const fetchAllProperties = async () => {
@@ -76,14 +86,7 @@ const AdminProperty = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const {
-      label,
-      lat,
-      long,
-      pictureUrl,
-      pictureAlt,
-      reservation,
-    } = newProperty;
+    const { label, lat, long, reservation } = newProperty;
     try {
       await axios.post(
         'http://localhost:5000/api/v0/properties',
@@ -91,8 +94,8 @@ const AdminProperty = () => {
           label,
           lat,
           long,
-          pictureUrl,
-          pictureAlt,
+          pictureUrl: uploaded.path,
+          pictureAlt: label,
           reservation,
         },
         {
@@ -109,14 +112,7 @@ const AdminProperty = () => {
 
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
-    const {
-      label,
-      lat,
-      long,
-      pictureUrl,
-      pictureAlt,
-      reservation,
-    } = newProperty;
+    const { label, lat, long, reservation } = newProperty;
     try {
       await axios.put(
         `http://localhost:5000/api/v0/properties/${id.id}`,
@@ -124,8 +120,8 @@ const AdminProperty = () => {
           label,
           lat,
           long,
-          pictureUrl,
-          pictureAlt,
+          pictureUrl: uploaded.path,
+          pictureAlt: label,
           reservation,
         },
         {
@@ -140,14 +136,39 @@ const AdminProperty = () => {
     fetchAllProperties();
   };
 
+  const handleUpload = (e) => {
+    setSelectedFile(e.target.files[0]);
+    setIsSelected(true);
+  };
+
+  const handleUploadSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+    try {
+      const { data } = await axios.post(
+        `http://localhost:5000/api/v0/pictures/upload`,
+        formData,
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setUploaded(data);
+    } catch (err) {
+      setError({ ...err });
+    }
+  };
+
   useEffect(() => {
     fetchAllProperties();
   }, []);
 
   return (
     <form className={classes.root} noValidate autoComplete="off">
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
+      <Grid container>
+        <Grid item xs={3}>
           <TextField
             type="text"
             id="list"
@@ -168,7 +189,7 @@ const AdminProperty = () => {
             type="text"
             id="label"
             label="Label"
-            // value={id !== '' ? property[id.id - 1].label : null}
+            // value={field()}
             onChange={(e) =>
               setNewProperty({ ...newProperty, label: e.target.value })
             }
@@ -198,29 +219,47 @@ const AdminProperty = () => {
             variant="outlined"
             size="small"
           />
-
-          <TextField
-            type="text"
-            id="pictureUrl"
-            label="Picture Url"
-            // value={id !== '' ? property[id.id - 1].picture[0].url : null}
-            onChange={(e) =>
-              setNewProperty({ ...newProperty, pictureUrl: e.target.value })
-            }
+          {id !== '' ? (
+            <Paper className={classes.picPreviewPaper}>
+              <img
+                src={property[id.id - 1].picture[0].url}
+                alt="Preview"
+                className={classes.picPreview}
+              />
+            </Paper>
+          ) : null}
+          <Button
             variant="outlined"
-            size="small"
-          />
-          <TextField
-            type="text"
-            id="pictureAlt"
-            label="Picture Alt"
-            // value={id !== '' ? property[id.id - 1].picture[0].alt : null}
-            onChange={(e) =>
-              setNewProperty({ ...newProperty, pictureAlt: e.target.value })
-            }
-            variant="outlined"
-            size="small"
-          />
+            component="label"
+            className={classes.ButtonValForm}
+          >
+            Upload Picture
+            <input type="file" hidden name="file" onChange={handleUpload} />
+          </Button>
+          {isSelected ? (
+            <div>
+              <Paper className={classes.picPreviewPaper}>
+                <img
+                  src={uploaded.path}
+                  alt="Preview"
+                  className={classes.picPreview}
+                />
+              </Paper>
+            </div>
+          ) : (
+            <p>File preview</p>
+          )}
+          <div>
+            <Button
+              variant="outlined"
+              component="label"
+              type="submit"
+              onClick={handleUploadSubmit}
+              className={classes.ButtonValForm}
+            >
+              Submit
+            </Button>
+          </div>
         </Grid>
 
         <Grid item xs={12}>
