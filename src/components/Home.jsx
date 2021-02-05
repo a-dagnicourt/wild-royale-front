@@ -110,6 +110,7 @@ const useStyles = makeStyles((theme) => ({
   footer: {
     backgroundColor: grey[800],
     color: 'white',
+    marginTop: theme.spacing(10),
   },
 }));
 
@@ -213,7 +214,6 @@ const Home = (props) => {
             ))}
           </MapContainer>
         </Grid>
-        <Divider style={{ margin: '3em' }} />
       </Grid>
       <Grid xs="12" className={classes.footer}>
         <Typography variant="body2" className={classes.title}>
@@ -242,16 +242,12 @@ function Item(props) {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Link component={RouterLink} to={linkedin} underline="none">
-          <Button size="small" color="primary">
-            <LinkedInIcon />
-          </Button>
-        </Link>
-        <Link component={RouterLink} to={github} underline="none">
-          <Button size="small" color="primary">
-            <GitHubIcon />
-          </Button>
-        </Link>
+        <Button size="small" color="primary" href={linkedin}>
+          <LinkedInIcon />
+        </Button>
+        <Button size="small" color="primary" href={github}>
+          <GitHubIcon />
+        </Button>
         <Button size="small" color="primary">
           {zone}
         </Button>
